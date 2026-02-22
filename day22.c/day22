@@ -1,0 +1,52 @@
+//Problem: Count Nodes in Linked List
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+int countNodes(Node* head) {
+    int count = 0;
+    Node* temp = head;
+
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+
+    return count;
+}
+
+Node* insertAtEnd(Node* head, int value) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        return newNode;
+    }
+
+    Node* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+    return head;
+}
+
+\int main() {
+    Node* head = NULL;
+
+    head = insertAtEnd(head, 10);
+    head = insertAtEnd(head, 20);
+    head = insertAtEnd(head, 30);
+    head = insertAtEnd(head, 40);
+
+    int totalNodes = countNodes(head);
+    printf("Total number of nodes = %d\n", totalNodes);
+
+    return 0;
+}
