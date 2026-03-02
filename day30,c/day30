@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+int main() {
+    int arr[] = {10, 10, 10};   
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int i;
+    int flag = 1;   
+
+    for(i = 1; i < n; i++) {
+        if(arr[i] != arr[0]) {
+            flag = 0;  
+            break;
+        }
+    }
+
+    if(flag == 1)
+        printf("All values are same\n");
+    else
+        printf("Values are not same\n");
+
+    return 0;
+}
