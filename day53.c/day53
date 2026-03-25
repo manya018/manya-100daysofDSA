@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* createNode(int data) {
+    struct Node* n = (struct Node*)malloc(sizeof(struct Node));
+    n->data = data;
+    n->left = n->right = NULL;
+    return n;
+}
+
+struct QNode {
+    struct Node* node;
+    int hd;
+    struct QNode* next;
+};
+
+struct QNode* front = NULL;
+struct QNode* rear = NULL;
+
+void enqueue(struct Node* node, int hd) {
+    struct QNode* temp = (struct QNode*)malloc(sizeof(struct QNode));
+    temp->node = node;
+    temp->hd = hd;
+    temp->next = NULL;
+
+    if (rear == NULL) {
+        front = rear = temp;
+        return;
+    }
+
+    rear->next = temp;
+    rear = temp;
+}
+
+struct QNode* dequeue() {
+    if (front == NULL)
+        return NULL;
+
+    struct QNode* temp = front;
+    front = front->next;
+
+    if (front == NULL)
+        rear = NULL;
+
+    return temp;
+}
+
+int isEmpty() {
+    return front == NULL;
+}
+
+struct Pair {
+    int hd;
+    int value;
+};
+
+void verticalOrder(struct Node* root) {
+    if (root == NULL)
+        return;
+
+    struct Pair arr[1000];
+    int k = 0;
+
+    enqueue(root, 0);
+
+    while (!isEmpty()) {
+        struct QNode* temp = dequeue();
+        struct Node* node = temp->node;
+        int hd = temp->hd;
+
+        arr[k].hd = hd;
+        arr[k].value = node->data;
+        k++;
+
+        if (node->left)
+            enqueue(node->left, hd - 1);
+
+        if (node->right)
+            enqueue(node->right, hd + 1);
+
+        free(temp);
+    }
+
+    for (int i = -100; i <= 100; i++) {
+        for (int j = 0; j < k; j++) {
+            if (arr[j].hd == i)
+                printf("%d ", arr[j].value);
+        }
+    }
+}
