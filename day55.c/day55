@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct TreeNode {
+    int val;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+int isMirror(struct TreeNode* left, struct TreeNode* right) {
+    if (left == NULL && right == NULL)
+        return 1;
+
+    if (left == NULL || right == NULL)
+        return 0;
+
+    if (left->val != right->val)
+        return 0;
+
+    return isMirror(left->left, right->right) &&
+           isMirror(left->right, right->left);
+}
+
+int isSymmetric(struct TreeNode* root) {
+    if (root == NULL)
+        return 1;
+
+    return isMirror(root->left, root->right);
+}
