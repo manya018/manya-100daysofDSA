@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+struct Node* queue[100];
+int front = -1, rear = -1;
+
+void enqueue(struct Node* node) {
+    if (rear == 99) return;
+    if (front == -1) front = 0;
+    queue[++rear] = node;
+}
+
+struct Node* dequeue() {
+    if (front == -1) return NULL;
+    struct Node* temp = queue[front];
+    if (front == rear) front = rear = -1;
+    else front++;
+    return temp;
+}
+
+int isEmpty() {
+    return front == -1;
+}
+
+void rightView(struct Node* root) {
+    if (root == NULL) return;
+
+    enqueue(root);
+
+    while (!isEmpty()) {
+        int size = rear - front + 1;
+
+        for (int i = 1; i <= size; i++) {
+            struct Node* curr = dequeue();
+
+            if (i == size)   
+                printf("%d ", curr->data);
+
+            if (curr->left) enqueue(curr->left);
+            if (curr->right) enqueue(curr->right);
+        }
+    }
+}
+
+int main() {
+    struct Node* root = createNode(1);
+    root->left = createNode(2);
+    root->right = createNode(3);
+    root->left->right = createNode(5);
+    root->right->right = createNode(4);
+
+    printf("Right View: ");
+    rightView(root);
+
+    return 0;
+}
